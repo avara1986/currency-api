@@ -1,0 +1,9 @@
+[run]
+include=
+    common/*
+    currency_providers/*
+    project/*
+    rates/*
+omit =
+    venv/*
+    */apps.py
