@@ -14,7 +14,10 @@ class RatesQuerySet(models.query.QuerySet):
     """
 
     def f_currency(self, currency):
-        self.filter(currency=currency)
+        return self.filter(currency=currency)
+
+    def f_milestone(self, milestone):
+        return self.filter(milestone=milestone)
 
     def group_months(self):
         """TODO: conocer si el valor que interesa de cada día es la media de todos los valores o el último

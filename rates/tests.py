@@ -83,7 +83,7 @@ class ViewsTests(TestCase):
         client = APIClient()
         response = client.get(self._get_url('/rates/'), format='json')
 
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 403)
 
     def test_retrive_body_v1(self):
         client = APIClient()
@@ -155,3 +155,20 @@ class ViewsTests(TestCase):
         }, HTTP_AUTHORIZATION=self.auth)
         self.assertEqual(response.data["result"],
                          "%.3f" % (time_weighted_rate(amount, rate1.amount, rate2.amount) * 100))
+
+    def test_graph(self):
+        client = APIClient()
+        amount = 5
+        currency1 = self._create_currency("EUR")
+        currency2 = self._create_currency("USD")
+        rate1 = self._create_rate(currency=currency1, date="2018-07-28")
+        rate2 = self._create_rate(currency=currency2, date="2018-07-28")
+
+        self._create_rate(currency=currency1, date="2018-07-27")
+        self._create_rate(currency=currency2, date="2018-07-27")
+
+        response = client.get(self._get_url('/rates/graph/?start_date=2018-07-27&end_date=2018-07-28'), format='json', data={
+            "currency": "USD"
+        }, HTTP_AUTHORIZATION=self.auth)
+
+        self.assertEqual(len(response.data), 2)
