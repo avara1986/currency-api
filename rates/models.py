@@ -11,6 +11,10 @@ class Currency(AppModel):
     code = models.CharField(max_length=3, primary_key=True)
     name = models.CharField(max_length=30)
 
+    def save(self, *args, **kwargs):
+        self.code = str(self.code).upper()
+        super(Currency, self).save(*args, **kwargs)
+
     def __str__(self):
         return "[{}] {}".format(self.code, self.name)
 

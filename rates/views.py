@@ -12,6 +12,7 @@ class MilestoneRangeFilter(filters.FilterSet):
     start_date = filters.DateFilter(field_name='milestone', lookup_expr=('gte'), )
     end_date = filters.DateFilter(field_name='milestone', lookup_expr=('lte'))
     date_invested = filters.DateFilter(field_name='milestone')
+    currencty = filters.CharFilter(field_name='currencty')
 
     class Meta:
         model = Rate
@@ -81,6 +82,6 @@ class RateViewSet(viewsets.ModelViewSet):
 
     @action(methods=['get'], detail=False)
     def graph(self, request):
-        query = self.get_queryset()
+        query = self.get_queryset().filter(currency=request.query_params["currency"].upper())
 
         return Response({"date": k["day"], "amount": k["total"]} for k in query.group_months())

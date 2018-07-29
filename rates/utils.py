@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 def retrive_and_insert_rate_from_provider(currency: Text, date: datetime) -> Tuple[Rate, bool]:
     created = False
     rate = None
-
+    currency = currency.upper()
     prov = provider(settings.CURRENCY_PROVIDER, base=settings.CURRENCY_BASE)
     result, amount, milestone = prov.rates(currency=currency, date=date)
     logger.info("{} {} {}".format(result, amount, milestone))

@@ -16,7 +16,7 @@ class RatesQuerySet(models.query.QuerySet):
     def group_months(self):
         """TODO: conocer si el valor que interesa de cada día es la media de todos los valores o el último
         """
-        return (self.order_by('-milestone').annotate(day=TruncDay('milestone'))
+        return (self.order_by('milestone').annotate(day=TruncDay('milestone'))
                 .values('day')
                 .annotate(num_records=Count('id'))
                 .annotate(total=Sum('amount'))

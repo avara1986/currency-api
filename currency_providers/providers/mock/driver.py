@@ -13,16 +13,22 @@ class Driver(BaseProviderDriver):
         super().__init__(base=base)
         self._mock_data = {}
         for currency in ["EUR", "CHF", "USD", "GBP"]:
+            currency = self._format_currency(currency)
             self._mock_data[currency] = {}
             for i in range(0, 1400):  # 4 años
                 date = datetime.datetime.now() - datetime.timedelta(days=i)
                 self._mock_data[currency][self._parse_date(date)] = random.random()
 
     @staticmethod
+    def _format_currency(currency):
+        return currency.upper()
+
+    @staticmethod
     def _parse_date(date):
         return date.strftime("%Y-%m-%d")
 
     def rates(self, currency: Text, date: datetime = None) -> Tuple[bool, float, datetime.datetime]:
+        currency = self._format_currency(currency)
         if not date:
             date = datetime.datetime.now()
         date_str = self._parse_date(date)
@@ -30,6 +36,8 @@ class Driver(BaseProviderDriver):
 
     def exchanges(self, currency_origin: Text, currency_destination: Text, amount: int) -> Tuple[
         bool, float, datetime.datetime]:
+        currency_origin = self._format_currency(currency_origin)
+        currency_destination = self._format_currency(currency_destination)
         first_key = next(i for i in self._mock_data[currency_origin])
         amount_origin = self._mock_data[currency_origin][first_key]
         amount_destination = self._mock_data[currency_destination][first_key]
