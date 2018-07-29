@@ -37,6 +37,7 @@ class Request(object):
         :return: str
         """
         content = "{}"
+        response = False
         self.url = url
         request_params = {"url": self.get_full_url()}
 
@@ -45,7 +46,7 @@ class Request(object):
 
         if method == "get":
             request_params.update({"params": data})
-        else:
+        else:  # pragma: no cover
             if headers.get("content-type") == "application/json":
                 request_params.update({"json": data})
             else:
@@ -63,10 +64,10 @@ class Request(object):
             logger.debug("Response result: [{}] {}".format(response.status_code, json.dumps(response.text)))
             content = json.loads(response.text)
         except ConnectTimeout as exception:
-            response = self.parse_exceptions(exception)
+            content = self.parse_exceptions(exception)
         except ConnectionError as exception:
-            response = self.parse_exceptions(exception)
+            content = self.parse_exceptions(exception)
         except RemoteDisconnected as exception:
-            response = self.parse_exceptions(exception)
+            content = self.parse_exceptions(exception)
 
         return response, content

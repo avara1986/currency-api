@@ -24,7 +24,7 @@ urlpatterns = [
     path('backoffice/', include('backoffice.urls')),
 ]
 
-if settings.DEBUG: # pragma: no cover
+if settings.DEBUG:  # pragma: no cover
     import debug_toolbar
 
     urlpatterns = [
