@@ -4,7 +4,22 @@
 [![Coverage Status](https://coveralls.io/repos/github/avara1986/currency-api/badge.svg?branch=master)](https://coveralls.io/github/avara1986/currency-api?branch=master)
 [![Requirements Status](https://requires.io/github/avara1986/currency-api/requirements.svg?branch=master)](https://requires.io/github/avara1986/currency-api/requirements/?branch=master)
 
+# Instalación
 
+    virtualenv -p python3.6 venv
+    source venv/bin/activate
+    pip install -r requirements-tests.txt
+    python manage.py migrate
+    
+# Ejecutar el proyecto
+
+Para que nuestro proyecto funcione contra Fixer.io se puede ejecutar con:
+    
+    python manage.py runserver
+
+Para utilizar mocks:
+
+    python manage.py runserver --settings=project.settings_test
 
 # Arquitectura
 
@@ -16,16 +31,23 @@ La estructura y lógica del proyecto se ha hecho con las siguientes premisas:
 - El job para recuperar los cambios de divisa se divide en la recuperación de los precios en tiempo real para recuperar los valores diarios y otro para recuperar el histórico de datos si en cualquier momento añadimos una nueva moneda en el proyecto y tenemos en cuenta que el proveedor no nos va a permitir hacer en un solo día las llamadas necesarias para traernos varios años.
 - 
 - Los access keys, contraseñas se definen por variables de entorno
+
 ## Currency_providers
 Core de la aplicación, aquí definiremos los origenes de datos.
 
 
 # Job
     
+Para recuperar un valor de una divisa en concreto:
+    
     python manage.py retrive_rates EUR 2018-07-22 --settings=project.settings_test
 
+Para generar X días hacia atrás con valores random una divisa en concreto:
 
-    python manage.py retrive_rates EUR 2018-07-22 --settings=project.settings
+    python manage.py generate_random_data CHF 10000 --settings=project.settings_test^
+
+
+
 
 Create and push the image
 

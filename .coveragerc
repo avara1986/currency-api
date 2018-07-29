@@ -1,9 +1,11 @@
 [run]
 include=
     common/*
+    backoffice/*
     currency_providers/*
     project/*
     rates/*
 omit =
     venv/*
     */apps.py
+    .tox/*
