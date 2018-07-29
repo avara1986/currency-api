@@ -30,6 +30,12 @@ La estructura y lógica del proyecto se ha hecho con las siguientes premisas:
 - Añadir un nuevo proveedor implicará despliegue de código. Podría buscarse una solución para que en cualquier momento, desplegando la aplicación, se puede cambiar un proveedor por otro
 - El job para recuperar los cambios de divisa se divide en la recuperación de los precios en tiempo real para recuperar los valores diarios y otro para recuperar el histórico de datos si en cualquier momento añadimos una nueva moneda en el proyecto y tenemos en cuenta que el proveedor no nos va a permitir hacer en un solo día las llamadas necesarias para traernos varios años.
 
+## Problemas conocidos
+- Como no se mencionaba y viendo otros portales, la divisa base se mantiene como constante en la configuración
+  y se almacena en la BBDD. Si se quisiese que la divisa base fuese configurable por el usuario habría que refactorizar
+- El versionado se ha planteado para modificar los datos de respuesta (en los serializers) si la aplicación cambiase de lógica
+  con frecuencia puede que no sea la forma óptima de plantear el versionado
+
 ## Currency_providers
 Core de la aplicación, aquí definiremos los origenes de datos.
 

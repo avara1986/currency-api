@@ -23,12 +23,6 @@ class ViewsTests(TestCase):
             version = settings.DEFAULT_VERSION
         return "/{}{}".format(version, url)
 
-    def test_retrive_status_code(self):
-        client = APIClient()
-        response = client.get(self._get_url('/rates/'), format='json')
-
-        assert response.status_code == 200
-
     def _create_currency(self, code=None):
         currency = CurrentyFactory(code=code)
         return currency
@@ -46,12 +40,35 @@ class ViewsTests(TestCase):
         rate.save()
         return rate
 
-    def test_retrive_body(self):
+    def test_retrive_status_code(self):
+        client = APIClient()
+        response = client.get(self._get_url('/rates/'), format='json')
+
+        assert response.status_code == 200
+
+    def test_retrive_body_v1(self):
+        client = APIClient()
+        currency = self._create_currency("EUR")
+        rate = self._create_rate(currency=currency)
+        response = client.get(self._get_url('/rates/', "v1"), format='json')
+
+        self.assertEqual(response.data[0].get("idpublic"), None)
+        self.assertEqual(float(response.data[0]["amount"]), rate.amount)
+        self.assertEqual(response.data[0]["milestone"], "{}T00:00:00Z".format(rate.milestone))
+        self.assertEqual(response.data[0]["currency"]["code"], rate.currency.code)
+        self.assertEqual(response.data[0].get("base"), None)
+
+
+    def test_retrive_body_v2(self):
         client = APIClient()
         currency = self._create_currency("EUR")
         rate = self._create_rate(currency=currency)
         response = client.get(self._get_url('/rates/'), format='json')
+        self.assertEqual(response.data[0]["idpublic"], str(rate.idpublic))
         self.assertEqual(float(response.data[0]["amount"]), rate.amount)
+        self.assertEqual(response.data[0]["milestone"], "{}T00:00:00Z".format(rate.milestone))
+        self.assertEqual(response.data[0]["currency"]["code"], rate.currency.code)
+        self.assertEqual(response.data[0]["base"]["code"], rate.currency.code)
 
     def test_retrive_body_filter_dates(self):
         client = APIClient()
