@@ -61,6 +61,9 @@ Para consultar el swagger:
 
     curl -X POST -d "grant_type=password&username=prometeo&password=test1234" -u"lWFeJLhTlCUKyKBAE0c18lS2ON8EpxcTYppac3bW:DZMuYv5zSgRzeZ3VfGTuWzasBUqwcVvdEENQiw5QSH8v1Hq1q5lbkMNKB42YtzsQNANcWoGdcglo2aAVF9xmYHh3FudceoGiJUkjWjM3ZmbS08HL2PvN1vP09Stu3UgU" http://localhost:8000/o/token/
 
+Con el token que nos devuelve lo incluiremos para recuperar los datos como vemos en las llamadas
+de ejemplo de los diferentes endpoints
+
 
 ## Información de divisa
 
