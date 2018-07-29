@@ -12,3 +12,5 @@ omit =
     */migrations/*
     setup.py
     manage.py
+    settings_pro.py
+    settings_local.py
