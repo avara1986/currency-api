@@ -25,5 +25,5 @@ class Command(BaseCommand):
             rate, created = retrive_and_insert_rate_from_provider(currency, date)
             if rate:
                 self.stdout.write(self.style.SUCCESS('Successfully rate %s. Created %s' % (rate, created)))
-            else:
+            else:  # pragma: no cover
                 self.stdout.write(self.style.ERROR('Error creating created rate'))

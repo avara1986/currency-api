@@ -36,7 +36,9 @@ Ejecutar:
 
 La estructura y lógica del proyecto se ha hecho con las siguientes premisas:
 
-- En cada entorno nunca existirá más de un proveedor a la vez
+- En cada entorno nunca existirá más de un proveedor a la vez. Pero en cada Job se puede configurar con un proveedor diferente.
+  Por ejemplo, podríamos configurar un proveedor que nos de actualizaciones para una divisa cada 24h pero podríamos configurar
+  otro que recupere valores cada 5 minutos
 - Nuestro core de proveedor de divisas será agnóstico del gestor de base de datos y de la aplicación
 - Añadir un nuevo proveedor implicará despliegue de código. Podría buscarse una solución para que en cualquier momento, desplegando la aplicación, se puede cambiar un proveedor por otro
 - El job para recuperar los cambios de divisa se divide en la recuperación de los precios en tiempo real para recuperar los valores diarios y otro para recuperar el histórico de datos si en cualquier momento añadimos una nueva moneda en el proyecto y tenemos en cuenta que el proveedor no nos va a permitir hacer en un solo día las llamadas necesarias para traernos varios años.
