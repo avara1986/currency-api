@@ -35,6 +35,44 @@ La estructura y lógica del proyecto se ha hecho con las siguientes premisas:
 ## Currency_providers
 Core de la aplicación, aquí definiremos los origenes de datos.
 
+## Información de divisa
+
+**Endpoint:** http://localhost:8000/rates/
+
+Parámetros:
+ - start_date: fecha desde donde queremos recuperar los valores
+ - end_date: fecha hasta donde queremos recuperar los valores
+ - currency: divisa que queremos recuperar [OPCIONAL]
+
+Ejemplo de llamada:
+
+    curl -X GET "http://localhost:8000/rates/?start_date=2017-05-01&end_date=2017-07-01&currency=EUR" -H "accept: application/json" 
+
+## Cambio de divisa
+
+**Endpoint:** http://localhost:8000/rates/exchange/
+
+Ejemplo de datos que hay que enviarle:
+
+    {
+      "origin_currency": "EUR",
+      "target_currency": "EUR",
+      "amount": 5,
+      "date_invested": "2018-07-28"
+    }
+
+Ejemplo de llamada:
+
+    curl -X POST "http://localhost:8000/rates/exchange/" -H "Content-Type: application/json" -d "{ \"origin_currency\": \"EUR\", \"target_currency\": \"EUR\", \"amount\": 5, \"date_invested\": \"2018-07-28\"}"
+
+## Backoffice
+Nuestra gráfica de evolución de precios la podemos encontrar en:
+    
+    http://localhost:8000/backoffice/
+
+Que obtiene los datos de:
+
+    http://localhost:8000/rates/graph/?currency=EUR
 
 # Job
     
@@ -46,7 +84,9 @@ Para generar X días hacia atrás con valores random una divisa en concreto:
 
     python manage.py generate_random_data CHF 10000 --settings=project.settings_test^
 
+Estos se podrían pasar a un job de cron (o una lambda ;) )
 
+0 8,15,20,23 * * *    {path_a_virtualenv}/venv/bin/python {path_a_proyecto}/manage.py generate_random_data CHF 10000 --settings=project.settings >> {mis_logs}/ingest.log
 
 
 Create and push the image

@@ -12,7 +12,7 @@ class MilestoneRangeFilter(filters.FilterSet):
     start_date = filters.DateFilter(field_name='milestone', lookup_expr=('gte'), )
     end_date = filters.DateFilter(field_name='milestone', lookup_expr=('lte'))
     date_invested = filters.DateFilter(field_name='milestone')
-    currencty = filters.CharFilter(field_name='currencty')
+    currency = filters.CharFilter(field_name='currency')
 
     class Meta:
         model = Rate
