@@ -18,8 +18,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', schema_view),
     url(r'^v1/', include((router.urls, "ratesv1"), namespace='v1')),
-    url(r'^v2/', include((router.urls, "ratesv2"), namespace='v2')),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('v2/', include((router.urls, "ratesv2"), namespace='v2')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     path('backoffice/', include('backoffice.urls')),
 ]
 

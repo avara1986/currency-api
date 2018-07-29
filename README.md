@@ -10,6 +10,7 @@
     source venv/bin/activate
     pip install -r requirements-tests.txt
     python manage.py migrate
+    python manage.py loaddata -e contenttypes fixtures.json
     
 # Ejecutar el proyecto
 
@@ -44,6 +45,11 @@ Para consultar el swagger:
 
     http://localhost:8000/
 
+## Login:
+
+    curl -X POST -d "grant_type=password&username=prometeo&password=test1234" -u"lWFeJLhTlCUKyKBAE0c18lS2ON8EpxcTYppac3bW:DZMuYv5zSgRzeZ3VfGTuWzasBUqwcVvdEENQiw5QSH8v1Hq1q5lbkMNKB42YtzsQNANcWoGdcglo2aAVF9xmYHh3FudceoGiJUkjWjM3ZmbS08HL2PvN1vP09Stu3UgU" http://localhost:8000/o/token/
+
+
 ## Información de divisa
 
 **Endpoint:** http://localhost:8000/v2/rates/
@@ -55,7 +61,7 @@ Parámetros:
 
 Ejemplo de llamada:
 
-    curl -X GET "http://localhost:8000/v2/rates/?start_date=2017-05-01&end_date=2017-07-01&currency=EUR" -H "accept: application/json" 
+    curl -X GET "http://localhost:8000/v2/rates/?start_date=2017-05-01&end_date=2017-07-01&currency=EUR" -H 'Authorization: Bearer 9Loy1DQcYJxKQsdcfhdApYwZb46JB4' -H "accept: application/json" 
 
 ## Cambio de divisa
 
@@ -72,7 +78,7 @@ Ejemplo de datos que hay que enviarle:
 
 Ejemplo de llamada:
 
-    curl -X POST "http://localhost:8000/v2/rates/exchange/" -H "Content-Type: application/json" -d "{ \"origin_currency\": \"EUR\", \"target_currency\": \"USD\", \"amount\": 5, \"date_invested\": \"2018-07-28\"}"
+    curl -X POST "http://localhost:8000/v2/rates/exchange/" -H "Content-Type: application/json" -d "{ \"origin_currency\": \"EUR\", \"target_currency\": \"USD\", \"amount\": 5, \"date_invested\": \"2018-07-28\"}" -H 'Authorization: Bearer 9Loy1DQcYJxKQsdcfhdApYwZb46JB4'
 
 ## Time-Weighted Rate
 
@@ -89,7 +95,7 @@ Ejemplo de datos que hay que enviarle:
 
 Ejemplo de llamada:
 
-    curl -X POST "http://localhost:8000/v2/rates/time_weighted_rate/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"origin_currency\": \"EUR\", \"target_currency\": \"USD\", \"amount\": 5, \"date_invested\": \"2018-07-26\"}"
+    curl -X POST "http://localhost:8000/v2/rates/time_weighted_rate/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"origin_currency\": \"EUR\", \"target_currency\": \"USD\", \"amount\": 5, \"date_invested\": \"2018-07-26\"}" -H 'Authorization: Bearer 9Loy1DQcYJxKQsdcfhdApYwZb46JB4'
 
 ## Backoffice
 
