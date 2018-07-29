@@ -9,3 +9,6 @@ omit =
     venv/*
     */apps.py
     .tox/*
+    */migrations/*
+    setup.py
+    manage.py
