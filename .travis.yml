@@ -13,6 +13,12 @@ script:
 after_success:
   - coverage combine
   - coveralls
+addons:
+  apt:
+    sources:
+      - deadsnakes
+    packages:
+      - python3.5
 
 notifications:
   email:
