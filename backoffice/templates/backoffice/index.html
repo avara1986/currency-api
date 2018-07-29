@@ -20,25 +20,31 @@ var options =  {
 		titleFontSize: 24,
 		includeZero: false
 	},
-	data: [{
-		type: "spline",
-		yValueFormatString: "$#,###.##",
-		dataPoints: dataPoints
-	}]
+	data: dataPoints
 };
 
 function addData(data) {
+    var linePoints = {
+		type: "spline",
+        label: "EUR",
+		yValueFormatString: "$#,###.##",
+		dataPoints: []
+	};
 	for (var i = 0; i < data.length; i++) {
-		dataPoints.push({
+		linePoints.dataPoints.push({
 			x: new Date(data[i].date),
 			y: data[i].amount
 		});
 	}
+	dataPoints.push(linePoints);
 	$("#chartContainer").CanvasJSChart(options);
 
 }
-$.getJSON("http://localhost:8000/rates/graph/", addData);
-
+$.getJSON("http://localhost:8000/rates/graph/?currency=eur", addData);
+$.getJSON("http://localhost:8000/rates/graph/?currency=usd", addData);
+$.getJSON("http://localhost:8000/rates/graph/?currency=btc", addData);
+$.getJSON("http://localhost:8000/rates/graph/?currency=chf", addData);
+console.log(dataPoints)
 }
 </script>
 </head>
