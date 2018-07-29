@@ -22,6 +22,16 @@ Para utilizar mocks:
 
     python manage.py runserver --settings=project.settings_test
 
+# Ejecutar desde docker (como si fuera producción)
+
+Construir imagen
+
+    docker build -t currencyapi -f Dockerfile .
+
+Ejecutar:
+
+    docker run -d -p 8000:8000 currencyapi
+
 # Arquitectura
 
 La estructura y lógica del proyecto se ha hecho con las siguientes premisas:
@@ -119,26 +129,8 @@ Para generar X días hacia atrás con valores random una divisa en concreto:
 
 Estos se podrían pasar a un job de cron (o una lambda ;) )
 
-0 8,15,20,23 * * *    {path_a_virtualenv}/venv/bin/python {path_a_proyecto}/manage.py generate_random_data CHF 10000 --settings=project.settings >> {mis_logs}/ingest.log
-
-
-Create and push the image
-
-    docker build -t templatedjango -f Dockerfile .
-
-Test the image:
-
-    docker run -d -p 8000:8000 templatedjango
+    0 8,15,20,23 * * *    {path_a_virtualenv}/venv/bin/python {path_a_proyecto}/manage.py generate_random_data CHF 10000 --settings=project.settings >> {mis_logs}/ingest.log
     
-    
-Push to Kubernetes:
-
-    kubectl create -f service.yaml
-    
-    
-## How to contrib
-
-TODO
 
 ### Update docs
 

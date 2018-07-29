@@ -4,7 +4,7 @@ RUN apk add --update curl gcc g++ git libffi-dev openssl-dev python3-dev \
     && rm -rf /var/cache/apk/*
 RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
 
-ENV PYTHONUNBUFFERED=1 ENVIRONMENT=pre APP_HOME=/microservice/
+ENV PYTHONUNBUFFERED=1 ENVIRONMENT=pre APP_HOME=/api/
 RUN mkdir $APP_HOME && adduser -S -D -H python
 
 RUN chown -R python $APP_HOME
