@@ -177,7 +177,10 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
 }
+
+DEFAULT_VERSION = "v2"
 
 CURRENCY_PROVIDER = "fixer"
 CURRENCY_BASE = "EUR"

@@ -1,18 +1,6 @@
 """project URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import include, path
@@ -22,14 +10,22 @@ from rest_framework_swagger.views import get_swagger_view
 from rates.views import RateViewSet
 
 router = routers.DefaultRouter()
-router.register(r'rates', RateViewSet)
+router.register(r'rates', RateViewSet, base_name="rates")
 
 schema_view = get_swagger_view(title='Currency API')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', schema_view),
-    url(r'^', include(router.urls)),
+    url(r'^v1/', include((router.urls, "ratesv1"), namespace='v1')),
+    url(r'^v2/', include((router.urls, "ratesv2"), namespace='v2')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('backoffice/', include('backoffice.urls')),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns = [
+                      url(r'^__debug__/', include(debug_toolbar.urls)),
+                  ] + urlpatterns

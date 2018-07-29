@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from rates.models import Rate, Currency
-from rates.serializers import RateSerializer
+from rates.serializers import RateSerializer, RateSerializerVersion2
 from rates.utils import time_weighted_rate
 
 
@@ -25,6 +25,11 @@ class RateViewSet(viewsets.ModelViewSet):
     serializer_class = RateSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_class = MilestoneRangeFilter
+
+    def get_serializer_class(self):
+        if self.request.version == 'v1':
+            return RateSerializer
+        return RateSerializerVersion2
 
     @action(methods=['post'], detail=False)
     def exchange(self, request):
@@ -77,11 +82,11 @@ class RateViewSet(viewsets.ModelViewSet):
             "success": True,
             "from": currency_from.code,
             "to": currency_to.code,
-            "result": "{}%".format(time_weighted_rate(amount, rate_from.amount, rate_to.amount) * 100)
+            "result": "%.3f" % (time_weighted_rate(amount, rate_from.amount, rate_to.amount) * 100)
         })
 
     @action(methods=['get'], detail=False)
     def graph(self, request):
         query = self.get_queryset().filter(currency=request.query_params["currency"].upper())
 
-        return Response({"date": k["day"], "amount": k["total"]} for k in query.group_months())
+        return Response({"date": k["day"], "amount": k["wieght"]} for k in query.group_months())

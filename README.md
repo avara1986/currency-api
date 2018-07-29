@@ -29,15 +29,18 @@ La estructura y lógica del proyecto se ha hecho con las siguientes premisas:
 - Nuestro core de proveedor de divisas será agnóstico del gestor de base de datos y de la aplicación
 - Añadir un nuevo proveedor implicará despliegue de código. Podría buscarse una solución para que en cualquier momento, desplegando la aplicación, se puede cambiar un proveedor por otro
 - El job para recuperar los cambios de divisa se divide en la recuperación de los precios en tiempo real para recuperar los valores diarios y otro para recuperar el histórico de datos si en cualquier momento añadimos una nueva moneda en el proyecto y tenemos en cuenta que el proveedor no nos va a permitir hacer en un solo día las llamadas necesarias para traernos varios años.
-- 
-- Los access keys, contraseñas se definen por variables de entorno
 
 ## Currency_providers
 Core de la aplicación, aquí definiremos los origenes de datos.
 
+## Swagger
+Para consultar el swagger:
+
+    http://localhost:8000/
+
 ## Información de divisa
 
-**Endpoint:** http://localhost:8000/rates/
+**Endpoint:** http://localhost:8000/v2/rates/
 
 Parámetros:
  - start_date: fecha desde donde queremos recuperar los valores
@@ -46,33 +49,51 @@ Parámetros:
 
 Ejemplo de llamada:
 
-    curl -X GET "http://localhost:8000/rates/?start_date=2017-05-01&end_date=2017-07-01&currency=EUR" -H "accept: application/json" 
+    curl -X GET "http://localhost:8000/v2/rates/?start_date=2017-05-01&end_date=2017-07-01&currency=EUR" -H "accept: application/json" 
 
 ## Cambio de divisa
 
-**Endpoint:** http://localhost:8000/rates/exchange/
+**Endpoint:** http://localhost:8000/v2/rates/exchange/
 
 Ejemplo de datos que hay que enviarle:
 
     {
       "origin_currency": "EUR",
-      "target_currency": "EUR",
+      "target_currency": "USD",
       "amount": 5,
       "date_invested": "2018-07-28"
     }
 
 Ejemplo de llamada:
 
-    curl -X POST "http://localhost:8000/rates/exchange/" -H "Content-Type: application/json" -d "{ \"origin_currency\": \"EUR\", \"target_currency\": \"EUR\", \"amount\": 5, \"date_invested\": \"2018-07-28\"}"
+    curl -X POST "http://localhost:8000/v2/rates/exchange/" -H "Content-Type: application/json" -d "{ \"origin_currency\": \"EUR\", \"target_currency\": \"USD\", \"amount\": 5, \"date_invested\": \"2018-07-28\"}"
+
+## Time-Weighted Rate
+
+**Endpoint:** http://localhost:8000/v2/rates/time_weighted_rate/
+
+Ejemplo de datos que hay que enviarle:
+
+    {
+      "origin_currency": "EUR",
+      "target_currency": "USD",
+      "amount": 5,
+      "date_invested": "2018-07-26"
+    }
+
+Ejemplo de llamada:
+
+    curl -X POST "http://localhost:8000/v2/rates/time_weighted_rate/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"origin_currency\": \"EUR\", \"target_currency\": \"USD\", \"amount\": 5, \"date_invested\": \"2018-07-26\"}"
 
 ## Backoffice
+
 Nuestra gráfica de evolución de precios la podemos encontrar en:
     
-    http://localhost:8000/backoffice/
+    http://localhost:8000/v2/backoffice/
 
 Que obtiene los datos de:
 
-    http://localhost:8000/rates/graph/?currency=EUR
+    http://localhost:8000/v2/rates/graph/?currency=EUR
 
 # Job
     

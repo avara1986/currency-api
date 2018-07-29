@@ -40,10 +40,10 @@ function addData(data) {
 	$("#chartContainer").CanvasJSChart(options);
 
 }
-$.getJSON("http://localhost:8000/rates/graph/?currency=eur", addData);
-$.getJSON("http://localhost:8000/rates/graph/?currency=usd", addData);
-$.getJSON("http://localhost:8000/rates/graph/?currency=btc", addData);
-$.getJSON("http://localhost:8000/rates/graph/?currency=chf", addData);
+$.getJSON("http://localhost:8000/v2/rates/graph/?currency=eur", addData);
+$.getJSON("http://localhost:8000/v2/rates/graph/?currency=usd", addData);
+$.getJSON("http://localhost:8000/v2/rates/graph/?currency=btc", addData);
+$.getJSON("http://localhost:8000/v2/rates/graph/?currency=chf", addData);
 console.log(dataPoints)
 }
 </script>
